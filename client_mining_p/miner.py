@@ -4,6 +4,19 @@ import requests
 import sys
 import json
 
+def get_id():
+    file_name = "my_id.txt"
+
+    try:
+        my_id_file = open(file_name, "r")
+        return my_id_file.read()
+    except:
+        new_file = open(file_name, "w")
+        node_id = str(uuid4()).replace("-","")
+        new_file.write(node_id)
+        new_file.close()
+        return node_id
+
 
 def proof_of_work(block):
     """
