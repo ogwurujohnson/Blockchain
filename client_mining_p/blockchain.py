@@ -85,6 +85,9 @@ class Blockchain(object):
 
         return hashed_block
 
+    def add_block(self, block):
+        self.current_transactions = []
+        self.chain.append(block)
     @property
     def last_block(self):
         return self.chain[-1]
