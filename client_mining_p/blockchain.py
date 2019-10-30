@@ -223,6 +223,13 @@ def validate_chain():
     }
     return jsonify(response), 200
 
+@app.route("/last_block", methods=["GET"])
+def return_last_block():
+    last_block = blockchain.last_block
+    response = {
+        "last_block": last_block
+    }
+    return jsonify(response), 200
 
 # I got rid of the previos __main__ because i wanted users to be 
 # able to choose the port the want to use
