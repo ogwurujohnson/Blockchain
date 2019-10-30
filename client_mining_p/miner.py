@@ -1,8 +1,8 @@
 import hashlib
 import requests
-
 import sys
 import json
+from uuid import uuid4
 
 def get_id():
     file_name = "my_id.txt"
@@ -59,12 +59,8 @@ if __name__ == '__main__':
     else:
         node = "http://localhost:5000"
 
-    # Load ID
-    f = open("my_id.txt", "r")
-    id = f.read()
-    print("ID is", id)
-    f.close()
-
+    coins_mined = 0
+    proof = 0
     # Run forever until interrupted
     while True:
         response = requests.get(url=node + "/last_block")
