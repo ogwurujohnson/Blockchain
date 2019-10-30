@@ -172,6 +172,21 @@ def mine():
     proof = blockchain.proof_of_work(blockchain.last_block)
     # Forge the new Block by adding it to the chain with the proof
 
+    last_block = blockchain.last_block
+    last_block_string = json.dumps(last_block, sort_keys=True).encode()
+
+    values = request.get_json()
+
+    sent_proof = values["proof"]
+
+    sent_id = values["id"]
+
+    if not blockchain.valid_proof(last_block_string, sent_proof):
+        response = {
+            "message": "proof was invalid or submitted too late"
+        }
+        return jsonify(response), 200
+
     blockchain.new_transaction(
         sender='0',
         recipient=node_identifier,
