@@ -8,13 +8,15 @@ import sys
 
 from flask import Flask, jsonify, request
 
+import requests
 
 class Blockchain(object):
     def __init__(self):
         self.chain = []
         self.current_transactions = []
+        self.nodes = set()
 
-        # Create the genesis block
+        # Create the begining block
         self.new_block(previous_hash=1, proof=100)
 
     def new_block(self, proof, previous_hash=None):
@@ -88,6 +90,7 @@ class Blockchain(object):
     def add_block(self, block):
         self.current_transactions = []
         self.chain.append(block)
+
     @property
     def last_block(self):
         return self.chain[-1]
@@ -166,10 +169,10 @@ node_identifier = str(uuid4()).replace('-', '')
 blockchain = Blockchain()
 
 
-@app.route('/mine', methods=['GET'])
+@app.route('/mine', methods=['POST'])
 def mine():
     # Run the proof of work algorithm to get the next proof
-    proof = blockchain.proof_of_work(blockchain.last_block)
+    # proof = blockchain.proof_of_work(blockchain.last_block)
     # Forge the new Block by adding it to the chain with the proof
 
     last_block = blockchain.last_block
@@ -189,12 +192,12 @@ def mine():
 
     blockchain.new_transaction(
         sender='0',
-        recipient=node_identifier,
+        recipient=sent_id,
         amount='1'
     )
 
     previous_hash = blockchain.hash(blockchain.last_block)
-    block = blockchain.new_block(proof, previous_hash)
+    block = blockchain.new_block(sent_proof, previous_hash)
 
 
     response = {
